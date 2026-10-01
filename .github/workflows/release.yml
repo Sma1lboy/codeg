@@ -41,6 +41,10 @@ jobs:
       - name: Check tag commit belongs to default branch
         shell: bash
         run: |
+          if [[ "${GITHUB_REF_NAME}" == *"-rc"* ]]; then
+            echo "Release candidate ${GITHUB_REF_NAME} rehearses an unmerged branch: not held to the default branch"
+            exit 0
+          fi
           DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
           git fetch origin "${DEFAULT_BRANCH}"
 
